@@ -2684,12 +2684,19 @@ bool ScintillaWin::IsVisible() const noexcept {
 	return GetWindowStyle(MainHWND()) & WS_VISIBLE;
 }
 
+#define WMU_SCI_SETSCROLLINFO 3334
+#define WMU_SCI_GETSCROLLINFO 3335
+
 int ScintillaWin::SetScrollInfo(int nBar, LPCSCROLLINFO lpsi, BOOL bRedraw) noexcept {
-	return ::SetScrollInfo(MainHWND(), nBar, lpsi, bRedraw);
+	return (int)::SendMessage(::GetParent(MainHWND()), WMU_SCI_SETSCROLLINFO,
+		MAKEWPARAM(nBar, bRedraw), reinterpret_cast<LPARAM>(lpsi));
+	//return ::SetScrollInfo(MainHWND(), nBar, lpsi, bRedraw);
 }
 
 bool ScintillaWin::GetScrollInfo(int nBar, LPSCROLLINFO lpsi) noexcept {
-	return ::GetScrollInfo(MainHWND(), nBar, lpsi);
+	return ::SendMessage(::GetParent(MainHWND()), WMU_SCI_GETSCROLLINFO,
+		MAKEWPARAM(nBar, 0), reinterpret_cast<LPARAM>(lpsi));
+	//return ::GetScrollInfo(MainHWND(), nBar, lpsi) ? true : false;
 }
 
 // Change the scroll position but avoid repaint if changing to same value

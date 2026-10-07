@@ -1349,6 +1349,9 @@ typedef sptr_t (*SciFnDirectStatus)(sptr_t ptr, unsigned int iMessage, uptr_t wP
 
 #endif
 
+#define WMU_SCI_SETSCROLLINFO 3334
+#define WMU_SCI_GETSCROLLINFO 3335
+
 /* These structures are defined to be exactly the same shape as the Win32
  * CHARRANGE, TEXTRANGE, FINDTEXTEX, FORMATRANGE, and NMHDR structs.
  * So older code that treats Scintilla as a RichEdit will work. */
